@@ -8,9 +8,9 @@ fn main() {
 
 fn start() {
     println!("Enter: Rock | Paper | Scissor");
-    let mut x = Roboter {choice: ["Rock", "Paper", "Scissor"], random: thread_rng().gen_range(0, 2)};
-    check_input();
-    println!("The roboter has choosen: {}", x.robot_choice());
+    let input = set_input();
+    check_input((&input).parse().unwrap());
+    compare((&input).parse().unwrap(), robot_pick());
 }
 
 fn set_input() -> String {
@@ -19,16 +19,22 @@ fn set_input() -> String {
     return input.trim().parse().unwrap();
 }
 
-fn check_input() {
+fn robot_pick() -> String {
+    let mut x = Roboter { choice: ["Rock", "Paper", "Scissor"], random: thread_rng().gen_range(0, 2) };
+    println!("The roboter has choosen: {}", x.robot_choice());
+    return x.robot_choice();
+}
+
+fn check_input(input: String) {
     loop {
-        match &set_input() as &str {
-            "Rock" => println!("You choose rock!"),
-            "Paper" => println!("You choose paper!"),
-            "Scissor" => println!("You choose scissor!"),
+        match &input as &str {
+            "Rock" => println!("You choose {}", &input),
+            "Paper" => println!("You choose {}", &input),
+            "Scissor" => println!("You choose {}", &input),
             _ => {
                 println!("Invalid input! Try again.");
                 continue;
-            },
+            }
         }
         break;
     }
@@ -45,4 +51,40 @@ mod robot {
             return self.choice[self.random].parse().unwrap();
         }
     }
+}
+
+fn compare(input: String, robot: String) {
+
+    let robot = match &input as &str {
+
+        _ if robot == input => println!("Draw!"),
+
+        "Rock" => {
+            if &robot == "Scissor" {
+                println!("You win!");
+            }
+            if &robot == "Paper" {
+                println!("You lose!");
+            }
+        }
+
+        "Paper" => {
+            if &robot == "Rock" {
+                println!("You win!");
+            }
+            if &robot == "Scissor" {
+                println!("You lose!");
+            }
+        }
+
+        "Scissor" => {
+            if &robot == "Paper" {
+                println!("You win!");
+            }
+            if &robot == "Rock" {
+                println!("You lose!");
+            }
+        }
+        _ => println!("Error!"),
+    };
 }
