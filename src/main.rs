@@ -1,6 +1,7 @@
 use std::io::stdin;
 use rand::{thread_rng, Rng};
 use crate::robot::Roboter;
+use std::process::exit;
 
 fn main() {
     start();
@@ -21,16 +22,16 @@ fn set_input() -> String {
 
 fn robot_pick() -> String {
     let mut x = Roboter { choice: ["Rock", "Paper", "Scissor"], random: thread_rng().gen_range(0, 2) };
-    println!("The roboter has choosen: {}", x.robot_choice());
+    println!("The roboter has choosen: {} \n", x.robot_choice());
     return x.robot_choice();
 }
 
 fn check_input(input: String) {
     loop {
         match &input as &str {
-            "Rock" => println!("You choose {}", &input),
-            "Paper" => println!("You choose {}", &input),
-            "Scissor" => println!("You choose {}", &input),
+            "Rock" => println!("You choose: {}", &input),
+            "Paper" => println!("You choose: {}", &input),
+            "Scissor" => println!("You choose: {}", &input),
             _ => {
                 println!("Invalid input! Try again.");
                 continue;
@@ -87,4 +88,22 @@ fn compare(input: String, robot: String) {
         }
         _ => println!("Error!"),
     };
+
+    play_again();
+}
+
+fn play_again() {
+    println!("Wanna play again? y / n");
+    let mut input = String::new();
+    stdin().read_line(&mut input).expect("Error");
+
+    match &input.trim() as &str{
+        "y" => {
+            main();
+        },
+        "n" => {
+            exit(0);
+        }
+        _ => println!("Invalid arguments!"),
+    }
 }
